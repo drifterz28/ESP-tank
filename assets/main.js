@@ -17,18 +17,18 @@ const App = React.createClass({
     this.setState({isConnected: false});
   },
   componentWillMount() {
-    conn.onopen = () => {
-      conn.send('Connect ' + new Date());
-    };
-    conn.onclose = (close) => {
-      console.log(close);
-    };
-    conn.onerror = (error) => {
-      this.handleError(error);
-    };
-    conn.onmessage = (e) => {
-      this.handleUpdate(e.data);
-    };
+    // conn.onopen = () => {
+    //   conn.send('Connect ' + new Date());
+    // };
+    // conn.onclose = (close) => {
+    //   console.log(close);
+    // };
+    // conn.onerror = (error) => {
+    //   this.handleError(error);
+    // };
+    // conn.onmessage = (e) => {
+    //   this.handleUpdate(e.data);
+    // };
   },
   componentWillUpdate(nextProps, nextState) {
     delete nextState.isConnected;
