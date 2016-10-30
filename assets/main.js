@@ -1,6 +1,6 @@
 const url = '192.168.0.109'; // for local testing
 //const url = location.hostname;
-const conn = new WebSocket(`ws://${url}:81/`, ['arduino']);
+//const conn = new WebSocket(`ws://${url}:81/`, ['arduino']);
 
 const utils = {};
 
