@@ -50,17 +50,43 @@ const App = React.createClass({
     state[track] = speed;
     this.setState(state);
   },
+  changeToZero(e) {
+    const track = e.target.name;
+    let state = {};
+    state[track] = 0;
+    this.setState(state);
+  },
   render() {
     const {leftTrack, rightTrack} = this.state;
     return (
       <div className="app">
         <div className="tracks">
           {leftTrack}<br/>
-          <input type="range" min="-255" max="255" name="left" value={leftTrack} name="leftTrack" onChange={this.handleChange}/>
+          <input
+            type="range"
+            min="-255"
+            max="255"
+            name="left"
+            value={leftTrack}
+            name="leftTrack"
+            onChange={this.handleChange}
+            onTouchEnd={this.changeToZero}
+            onMouseUp={this.changeToZero}
+          />
         </div>
         <div className="tracks">
           {rightTrack}<br/>
-          <input type="range" min="-255" max="255" name="left" value={rightTrack} name="rightTrack" onChange={this.handleChange}/>
+          <input
+            type="range"
+            min="-255"
+            max="255"
+            name="left"
+            value={rightTrack}
+            name="rightTrack"
+            onChange={this.handleChange}
+            onMouseUp={this.changeToZero}
+            onTouchEnd={this.changeToZero}
+          />
         </div>
       </div>
     );
