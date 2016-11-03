@@ -1,6 +1,6 @@
 //const url = '192.168.0.109'; // for local testing
 const url = location.hostname;
-const conn = new WebSocket(`ws://${url}:81/`, ['arduino']);
+let conn;
 
 const utils = {};
 
@@ -12,28 +12,35 @@ const App = React.createClass({
       rightTrack: 0
     };
   },
-  handleError(err) {
+  handleError(error) {
     console.log('Error ', error);
     this.setState({isConnected: false});
   },
   componentWillMount() {
-    conn.onopen = () => {
-      conn.send('Connect ' + new Date());
-    };
-    conn.onclose = (close) => {
-      console.log(close);
-    };
-    conn.onerror = (error) => {
-      this.handleError(error);
-    };
-    conn.onmessage = (e) => {
-      this.handleUpdate(e.data);
-    };
+    try {
+      const conn = new WebSocket(`ws://${url}:81/`, ['arduino']);
+      conn.onopen = () => {
+        conn.send('Connect ' + new Date());
+      };
+      conn.onclose = (close) => {
+        console.log(close);
+      };
+      conn.onerror = (error) => {
+        this.handleError(error);
+      };
+      conn.onmessage = (e) => {
+        this.handleUpdate(e.data);
+      };
+    } catch(e) {
+      this.handleError(e);
+    }
   },
   componentWillUpdate(nextProps, nextState) {
     delete nextState.isConnected;
     console.log(JSON.stringify(nextState));
-    conn.send(JSON.stringify(nextState));
+    if(this.state.isConnected) {
+      conn.send(JSON.stringify(nextState));
+    }
   },
   handleUpdate(data) {
     if(data === 'Connected') {
@@ -57,7 +64,7 @@ const App = React.createClass({
     this.setState(state);
   },
   render() {
-    const {leftTrack, rightTrack} = this.state;
+    const {leftTrack, rightTrack, isConnected} = this.state;
     return (
       <div className="app">
         <div className="tracks">
@@ -88,6 +95,7 @@ const App = React.createClass({
             onTouchEnd={this.changeToZero}
           />
         </div>
+        {!isConnected && <div className="notConnected">Not Connected, but feel free to play with the controls</div>}
       </div>
     );
   }
