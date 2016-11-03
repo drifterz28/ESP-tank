@@ -1,6 +1,6 @@
-const url = '192.168.0.109'; // for local testing
-//const url = location.hostname;
-//const conn = new WebSocket(`ws://${url}:81/`, ['arduino']);
+//const url = '192.168.0.109'; // for local testing
+const url = location.hostname;
+const conn = new WebSocket(`ws://${url}:81/`, ['arduino']);
 
 const utils = {};
 
@@ -17,23 +17,23 @@ const App = React.createClass({
     this.setState({isConnected: false});
   },
   componentWillMount() {
-    // conn.onopen = () => {
-    //   conn.send('Connect ' + new Date());
-    // };
-    // conn.onclose = (close) => {
-    //   console.log(close);
-    // };
-    // conn.onerror = (error) => {
-    //   this.handleError(error);
-    // };
-    // conn.onmessage = (e) => {
-    //   this.handleUpdate(e.data);
-    // };
+    conn.onopen = () => {
+      conn.send('Connect ' + new Date());
+    };
+    conn.onclose = (close) => {
+      console.log(close);
+    };
+    conn.onerror = (error) => {
+      this.handleError(error);
+    };
+    conn.onmessage = (e) => {
+      this.handleUpdate(e.data);
+    };
   },
   componentWillUpdate(nextProps, nextState) {
     delete nextState.isConnected;
     console.log(JSON.stringify(nextState));
-    //conn.send(JSON.stringify(nextState));
+    conn.send(JSON.stringify(nextState));
   },
   handleUpdate(data) {
     if(data === 'Connected') {
@@ -61,11 +61,11 @@ const App = React.createClass({
     return (
       <div className="app">
         <div className="tracks">
-          {leftTrack}<br/>
+          {Math.floor(leftTrack / 1024 * 100)}%<br/>
           <input
             type="range"
-            min="-255"
-            max="255"
+            min="-1024"
+            max="1024"
             name="left"
             value={leftTrack}
             name="leftTrack"
@@ -75,11 +75,11 @@ const App = React.createClass({
           />
         </div>
         <div className="tracks">
-          {rightTrack}<br/>
+          {Math.floor(rightTrack / 1024 * 100)}%<br/>
           <input
             type="range"
-            min="-255"
-            max="255"
+            min="-1024"
+            max="1024"
             name="left"
             value={rightTrack}
             name="rightTrack"
