@@ -55,8 +55,14 @@ input[type=range]:focus::-webkit-slider-runnable-track {
   justify-content: space-between;
   max-width: 900px;
   margin: 0 auto;
+  flex-wrap: wrap;
 }
 
 .tracks {
+  text-align: center;
+}
+
+.notConnected {
+  width: 100%;
   text-align: center;
 }
